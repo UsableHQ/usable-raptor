@@ -7,15 +7,23 @@
         "name": "Usablehq Ltd",
         "url": "http://usablehq.com"
     },
+    "private": true,
     "dependencies": {
         "winston": "0.5.11",
         "colors": "0.6.0-1",
         "js-yaml": "0.3.7"
     },
-    "main"         : "./lib/winston-raptor",
-    "directories"  : {"lib"  : "./lib"},
+    "scripts": {
+        "install": "make"
+    },
+    "main": "./lib/winston-raptor",
+    "directories": {
+        "lib": "./lib"
+    },
     "devDependencies": {
         "chai": "*"
-        },
-    "engines": ["node >= 0.6.0"]
+    },
+    "engines": [
+        "node >= 0.6.0"
+    ]
 }
