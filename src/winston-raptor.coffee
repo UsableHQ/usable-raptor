@@ -7,19 +7,28 @@ This is a wrapper for winston
 FIND_NAME = 'logging.config.yaml'
 
 winston = require 'winston'
-
 ##enable fancyconsole
-require('./winston-fancyconsole').Fancyconsole
+Fancyconsole = require('./winston-fancyconsole').Fancyconsole
+Loggly = require('winston-loggly').Loggly
+Rabbit = require('./winston-rabbit').Rabbit
+
+###
+Expose the name of this Transport on the prototype
+###
+winston.transports.Fancyconsole = Fancyconsole;
+winston.transports.Loggly = Loggly;
+winston.transports.Rabbit = Rabbit;
 
 ##need this for processing stuff
 require 'js-yaml'
 
 ###
-remove default console
+Add some options to winston
 ###
-
 winston.remove winston.transports.Console
-#console.log winston.loggers
+# set defualt log levels
+winston.setLevels(winston.config.npm.levels);
+
 ###
 YAML Processing and finding
 ###
@@ -79,7 +88,8 @@ cfg = (opts) ->
 
 
 processCategory = (option)->
-    winston.loggers.add option.name, processOption option
+    # set levels we will use
+    winston.loggers.add option.name, processOption(option)
     winston.loggers.get(option.name).remove winston.transports.Console #remove default console
 
 processOption = (option) ->
@@ -101,7 +111,16 @@ processOption = (option) ->
         cfg.loggly=
             level:option.level
             subdomain: option.logglySubdomain
-            inputToken: option.logglySecret   
+            inputToken: option.logglySecret
+
+    if (option.rabbitUser? and option.rabbitPassword? and option.rabbitURL?)
+      cfg.rabbit = 
+          level:option.level
+          user: option.rabbitUser
+          password: option.rabbitPassword
+          url: option.rabbitURL
+
+    # console.log(cfg)   
     return cfg
 ###
 return the log object for a particular category
@@ -133,13 +152,24 @@ defaults = [
     "catcolor": "bold red", 
     "name": "SYS", 
     "level": "silly", 
-    "fancymeta": false, 
+    "fancymeta": false,
+    "logglySubdomain" : "gotbadger",
+    "logglySecret" : "xxxx"
   }, 
   {
     "catcolor": "bold white", 
     "name": "API", 
     "level": "silly", 
     "fancymeta": false, 
+  }
+  {
+    "catcolor": "bold orange", 
+    "name": "TTS", 
+    "level": "silly", 
+    "fancymeta": false,
+    "rabbitUser": "bunny",
+    "rabbitPassword": "madhatter11",
+    "rabbitURL": "http://rabbit.sett.me.uk/hook/basic",
   }
 ]
 

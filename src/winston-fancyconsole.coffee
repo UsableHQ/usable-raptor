@@ -7,8 +7,7 @@ common = require 'winston/lib/winston/common'
 config = require 'winston/lib/winston/config'
 util = require 'util'
 colors = require 'colors'
-
-
+moment = require 'moment'
 
 Fancyconsole = exports.Fancyconsole =  (options) ->
   options = options or {};
@@ -22,22 +21,21 @@ Fancyconsole = exports.Fancyconsole =  (options) ->
 Inherit from `winston.Transport`.
 ###
 util.inherits(Fancyconsole, winston.Transport);
-###
-Expose the name of this Transport on the prototype
-###
-winston.transports.Fancyconsole = Fancyconsole;
 
 ###
 Logging
 ###
 Fancyconsole.prototype.log = (level, msg, meta, callback) -> 
+  # console.log arguments
+  # console.log this
+  # process.exit()
   if (this.silent)
     return callback(null, true);
   
 
   self = this
   
-  head =      common.timestamp()
+  head =      moment().format('D MMM hh:mm:ss');
   head += " - "+colorizeGeneric(self.category,self.catcolor)
   head += " "+config.colorize(level)+ " "
 
