@@ -22,6 +22,7 @@ Inherit from `winston.Transport`.
 ###
 util.inherits(Fancyconsole, winston.Transport);
 
+
 ###
 Logging
 ###

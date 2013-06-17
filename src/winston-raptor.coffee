@@ -167,9 +167,9 @@ defaults = [
     "name": "TTS", 
     "level": "silly", 
     "fancymeta": false,
-    "rabbitUser": "bunny",
-    "rabbitPassword": "madhatter11",
-    "rabbitURL": "http://rabbit.sett.me.uk/hook/basic",
+    "rabbitUser": "uuu",
+    "rabbitPassword": "xxxx",
+    "rabbitURL": "http://example.com/hook/basic",
   }
 ]
 
